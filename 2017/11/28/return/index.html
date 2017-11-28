@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>return of TCF | leewake</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在try catch finally中存在return，其执行顺序举例: 情况1: try{} catch(){}finally{} return; 显然程序按顺序执行。 情况2: try{ return; }catch(){} finally{} return; 程序执行try块中return之前(包括return语">
+<meta name="keywords" content="try-catch-finally">
+<meta property="og:type" content="article">
+<meta property="og:title" content="return of TCF">
+<meta property="og:url" content="http://yoursite.com/2017/11/28/return/index.html">
+<meta property="og:site_name" content="leewake">
+<meta property="og:description" content="在try catch finally中存在return，其执行顺序举例: 情况1: try{} catch(){}finally{} return; 显然程序按顺序执行。 情况2: try{ return; }catch(){} finally{} return; 程序执行try块中return之前(包括return语句中的表达式运算)代码; 再执行finally块,最后执行try中return;">
+<meta property="og:updated_time" content="2017-11-28T03:20:56.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="return of TCF">
+<meta name="twitter:description" content="在try catch finally中存在return，其执行顺序举例: 情况1: try{} catch(){}finally{} return; 显然程序按顺序执行。 情况2: try{ return; }catch(){} finally{} return; 程序执行try块中return之前(包括return语句中的表达式运算)代码; 再执行finally块,最后执行try中return;">
+  
+    <link rel="alternate" href="/atom.xml" title="leewake" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">leewake</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-return" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/11/28/return/" class="article-date">
+  <time datetime="2017-11-28T02:39:22.000Z" itemprop="datePublished">2017-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      return of TCF
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="在try-catch-finally中存在return，其执行顺序"><a href="#在try-catch-finally中存在return，其执行顺序" class="headerlink" title="在try catch finally中存在return，其执行顺序"></a>在try catch finally中存在return，其执行顺序</h2><p>举例:</p>
+<p>情况1: try{} catch(){}finally{} return;</p>
+<pre><code>显然程序按顺序执行。
+</code></pre><p>情况2: try{ return; }catch(){} finally{} return;</p>
+<pre><code>程序执行try块中return之前(包括return语句中的表达式运算)代码;
+再执行finally块,最后执行try中return;
+finally块之后的语句return，因为程序在try中已经return所以不再执行.
+</code></pre><p>情况3: try{ } catch(){return;} finally{} return;</p>
+<pre><code>程序先执行try，如果遇到异常执行catch块，
+有异常：则执行catch中return之前(包括return语句中的表达式运算)代码，再执行finally语句中全部代码,
+       最后执行catch块中return. finally块后面的return代码不再执行.
+无异常：执行完try再finally再return.
+</code></pre><p>情况4: try{ return; }catch(){} finally{return;}</p>
+<pre><code>程序执行try块中return之前(包括return语句中的表达式运算)代码;
+再执行finally块,因为finally块中有return所以提前退出.
+</code></pre><p>情况5: try{} catch(){return;}finally{return;}</p>
+<pre><code>程序执行catch块中return之前(包括return语句中的表达式运算)代码;
+再执行finally块,因为finally块中有return所以提前退出.
+</code></pre><p>情况6: try{ return;}catch(){return;} finally{return;}</p>
+<pre><code>程序执行try块中return之前(包括return语句中的表达式运算)代码;
+有异常: 执行catch块中return之前（包括return语句中的表达式运算）代码;
+       则再执行finally块,因为finally块中有return所以提前退出.
+无异常: 则再执行finally块,因为finally块中有return所以提前退出.
+</code></pre><p>易错点:</p>
+<p>1) 不管有木有出现异常,finally块中代码都会执行.</p>
+<p>2) finally是在return后面的表达式运算后执行的(此时并没有返回运算后的值，而是先把要返回的值保存起来，管finally中的代码怎么样，返回的值都不会改变，任然是之前保存的值),所以函数返回值是在finally执行前确定的;</p>
+<p>3) finally中最好不要包含return,否则程序会提前退出,返回值不是try或catch中保存的返回值,而是finally中所return的值(不管是按值还是按引用).</p>
+<p>4) 任何执行try或者catch中的return语句之前,如果finally存在的话,就会再执行finally语句,然后再返回.</p>
+<p>第一种情况</p>
+<pre><code>如果finally中有return语句,那么程序就return了,所以finally中的return是一定会被return的.
+</code></pre><p>第二种情况</p>
+<pre><code>如果finally中没有return语句,但是改变了要返回的值,这里有点类似与引用传递和值传递的区别,分以下两种情况:
+
+    1. 如果return的数据是基本数据类型或文本字符串,则在finally中对该基本数据的改变不起作用,
+       try中的return语句依然会返回进入finally块之前保留的值.
+
+    2. 如果return的数据是引用数据类型，,而在finally中对该引用数据类型的属性值的改变起作用,
+       try中的return语句返回的就是在finally中改变后的该属性的值.
+</code></pre><p><a href="https://github.com/leewake/hello-world/blob/master/src/test/java/com/pangpang/mvnbook/helloworld/TryCatchTest.java" target="_blank" rel="noopener">github代码示例</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/11/28/return/" data-id="cjaj1yykr000014u7qui6sly4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/11/27/xiaohou/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">xiaohou</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/try-catch-finally/" style="font-size: 10px;">try-catch-finally</a> <a href="/tags/xiaohou/" style="font-size: 10px;">xiaohou</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/28/return/">return of TCF</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/xiaohou/">xiaohou</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/jei-introduction/">jei-introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/27/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 leewake<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
