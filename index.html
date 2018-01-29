@@ -51,9 +51,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -95,8 +95,7 @@ CREATE USER &apos;sonar&apos; IDENTIFIED BY &apos;sonar&apos;;
 GRANT ALL ON sonar.* TO &apos;sonar&apos;@&apos;%&apos; IDENTIFIED BY &apos;sonar&apos;;
 GRANT ALL ON sonar.* TO &apos;sonar&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;sonar&apos;;
 FLUSH PRIVILEGES;
-</code></pre><p>then create a database about sonar.</p>
-<p><a href="http://blog.csdn.net/mhmyqn/article/details/37996673" target="_blank" rel="noopener">JPA实体继承实体的映射策略</a></p>
+</code></pre><p>then create a database about sonar. This database will store the future code check reports.</p>
 <p>2.SonarQube</p>
 <p>Dowmload sonarqube5.6.7 zip and unzip. Then edit ./conf/sonar.properties and write following contents:</p>
 <pre><code>sonar.jdbc.url=jdbc:mysql://server-ip:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance
@@ -144,7 +143,7 @@ INFO:  -i,--interactive      Run interactively
 <p>6.Run offical test examples</p>
 <p>Visit <a href="https://github.com/SonarSource/sonar-scanning-examples" target="_blank" rel="noopener">sonar-scanning-examples</a>, download and unzip. Then move this folder to ./ sonarqube-scanner，run </p>
 <pre><code>sonar-scanner/bin/sonar-scanner
-</code></pre><p><img src="/sonarqube/sonar-scanner-test.png" alt=""></p>
+</code></pre><p><img src="sonarqube/sonar-scanner-test.png" alt=""></p>
 <p>More details, please visit: <a href="http://blog.csdn.net/jamenew/article/details/54864480" target="_blank" rel="noopener">how to check your code using sonar</a></p>
 <h2 id="Depoly-1"><a href="#Depoly-1" class="headerlink" title="Depoly"></a>Depoly</h2><p>1.Maven settings</p>
 <p>Add the following code in lcoal maven settings.</p>
@@ -171,7 +170,7 @@ INFO:  -i,--interactive      Run interactively
 &lt;/build&gt;
 </code></pre><p>3.If you have done above two steps, run </p>
 <pre><code>mvn sonar:sonar
-</code></pre><p>and you can get code check report. Login server-ip:9000/sonar, visit the related results.<br><img src="/sonarqube/running.png" alt=""></p>
+</code></pre><p>and you can get code check report. Login server-ip:9000/sonar, visit the related results.<br><img src="sonarqube/running.png" alt=""></p>
 <p>4.Integrated with Jenkins</p>
 <p>4.1 Edit ./apache-maven-3.5.0/conf in your Jenkins server, add the following:</p>
 <pre><code>&lt;profile&gt;
@@ -196,7 +195,7 @@ INFO:  -i,--interactive      Run interactively
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/29/sonarqube/" data-id="cjd06pks50004ycu7w6sskx7w" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/01/29/sonarqube/" data-id="cjd06r46v0004vsu7aqh5w3wx" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sonarqube/">sonarqube</a></li></ul>
@@ -273,7 +272,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/28/return/" data-id="cjd06pkrw0002ycu7wpbwei3u" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/28/return/" data-id="cjd06r46b0001vsu7f6ftdvyx" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li></ul>
@@ -314,7 +313,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/xiaohou/" data-id="cjd06pks70005ycu7j67cn6n5" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/xiaohou/" data-id="cjd06r46y0005vsu7p27sr7tj" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
@@ -370,7 +369,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/jei-introduction/" data-id="cjd06pkro0001ycu7qw1mr2wr" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/jei-introduction/" data-id="cjd06r46k0002vsu75bsgmly6" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li></ul>
@@ -417,7 +416,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/hello-world/" data-id="cjd06pkrd0000ycu7j0kpq6qt" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/hello-world/" data-id="cjd06r4620000vsu7f3f170th" class="article-share-link">Partager</a>
       
       
     </footer>
@@ -437,7 +436,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sonarqube/">sonarqube</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
     </div>
@@ -447,7 +446,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
       <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/sonarqube/" style="font-size: 10px;">sonarqube</a> <a href="/tags/try-catch-finally/" style="font-size: 10px;">try-catch-finally</a> <a href="/tags/xiaohou/" style="font-size: 10px;">xiaohou</a>
     </div>
@@ -456,7 +455,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Arkiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
@@ -466,7 +465,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Siste innlegg</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -503,7 +502,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2018 leewake<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
