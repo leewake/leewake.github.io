@@ -14,7 +14,7 @@
 <meta property="og:description" content="EnvironmentJDK 1.8 + Mysql5.6.36 + sonarqube5.6.7 + sonar-scanner2.7  Depoly1.Mysql You can install mysql in same server with sonarqube. Or using any server which installs Mysql. I choose later in thi">
 <meta property="og:image" content="http://yoursite.com/2018/01/29/sonarqube/sonarqube/sonar-scanner-test.png">
 <meta property="og:image" content="http://yoursite.com/2018/01/29/sonarqube/sonarqube/running.png">
-<meta property="og:updated_time" content="2018-01-29T12:27:47.854Z">
+<meta property="og:updated_time" content="2018-01-29T12:33:30.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="sonarqube deploy &amp; use">
 <meta name="twitter:description" content="EnvironmentJDK 1.8 + Mysql5.6.36 + sonarqube5.6.7 + sonar-scanner2.7  Depoly1.Mysql You can install mysql in same server with sonarqube. Or using any server which installs Mysql. I choose later in thi">
@@ -146,7 +146,7 @@ INFO:  -i,--interactive      Run interactively
 <p>6.Run offical test examples</p>
 <p>Visit <a href="https://github.com/SonarSource/sonar-scanning-examples" target="_blank" rel="noopener">sonar-scanning-examples</a>, download and unzip. Then move this folder to ./ sonarqube-scanner，run </p>
 <pre><code>sonar-scanner/bin/sonar-scanner
-</code></pre><p><img src="sonarqube/sonar-scanner-test.png" alt=""></p>
+</code></pre><p><img src="sonarqube/sonar-scanner-test.png" alt="sonar-scanner-test"></p>
 <p>More details, please visit: <a href="http://blog.csdn.net/jamenew/article/details/54864480" target="_blank" rel="noopener">how to check your code using sonar</a></p>
 <h2 id="Depoly-1"><a href="#Depoly-1" class="headerlink" title="Depoly"></a>Depoly</h2><p>1.Maven settings</p>
 <p>Add the following code in lcoal maven settings.</p>
@@ -173,7 +173,7 @@ INFO:  -i,--interactive      Run interactively
 &lt;/build&gt;
 </code></pre><p>3.If you have done above two steps, run </p>
 <pre><code>mvn sonar:sonar
-</code></pre><p>and you can get code check report. Login server-ip:9000/sonar, visit the related results.<br><img src="sonarqube/running.png" alt=""></p>
+</code></pre><p>and you can get code check report. Login server-ip:9000/sonar, visit the related results.<br><img src="sonarqube/running.png" alt="running"></p>
 <p>4.Integrated with Jenkins</p>
 <p>4.1 Edit ./apache-maven-3.5.0/conf in your Jenkins server, add the following:</p>
 <pre><code>&lt;profile&gt;
@@ -198,7 +198,7 @@ INFO:  -i,--interactive      Run interactively
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/01/29/sonarqube/" data-id="cjd06r46v0004vsu7aqh5w3wx" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2018/01/29/sonarqube/" data-id="cjd06yhg9000084u76hbxwplt" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sonarqube/">sonarqube</a></li></ul>
