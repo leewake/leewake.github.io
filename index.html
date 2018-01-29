@@ -53,7 +53,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -63,6 +63,150 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-sonarqube" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/29/sonarqube/" class="article-date">
+  <time datetime="2018-01-29T12:16:12.000Z" itemprop="datePublished">2018-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/29/sonarqube/">sonarqube deploy &amp; use</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Environment"><a href="#Environment" class="headerlink" title="Environment"></a>Environment</h2><p>JDK 1.8 + Mysql5.6.36 + sonarqube5.6.7 + sonar-scanner2.7 </p>
+<h2 id="Depoly"><a href="#Depoly" class="headerlink" title="Depoly"></a>Depoly</h2><p>1.Mysql</p>
+<p>You can install mysql in same server with sonarqube. Or using any server which installs Mysql. I choose later in this installation.</p>
+<p>exec the following sql script:</p>
+<pre><code>CREATE DATABASE sonar CHARACTER SET utf8 COLLATE utf8_general_ci; 
+CREATE USER &apos;sonar&apos; IDENTIFIED BY &apos;sonar&apos;;
+GRANT ALL ON sonar.* TO &apos;sonar&apos;@&apos;%&apos; IDENTIFIED BY &apos;sonar&apos;;
+GRANT ALL ON sonar.* TO &apos;sonar&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;sonar&apos;;
+FLUSH PRIVILEGES;
+</code></pre><p>then create a database about sonar.</p>
+<p><a href="http://blog.csdn.net/mhmyqn/article/details/37996673" target="_blank" rel="noopener">JPA实体继承实体的映射策略</a></p>
+<p>2.SonarQube</p>
+<p>Dowmload sonarqube5.6.7 zip and unzip. Then edit ./conf/sonar.properties and write following contents:</p>
+<pre><code>sonar.jdbc.url=jdbc:mysql://server-ip:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance
+sonar.jdbc.username=sonar
+sonar.jdbc.password=sonar
+sonar.web.host= server-ip
+sonar.web.port=9000
+sonar.web.context=/sonar
+</code></pre><font color="red">note: open 9000 port  or not</font> 
+
+<p>Do not exec this step in this installation. If you encountered some related problems,<br>edit /etc/sysconfig/iptable, add this line:</p>
+<pre><code>-A RH-Firewall-1-INPUT -m state --state NEW -m tcp -p tcp --dport 9000 -j ACCEPT
+</code></pre><p>Then  run the script: </p>
+<pre><code>service iptables start (service iptables stop)
+</code></pre><p>3.Check</p>
+<p>Run </p>
+<pre><code>tail -f ./logs/sonar.log
+</code></pre><p>to see the logs and ensure that sonar is running normally.</p>
+<p>4.Localization plug-in</p>
+<p>Visit <a href="https://github.com/SonarQubeCommunity/sonar-l10n-zh" target="_blank" rel="noopener">zh-plugin</a>, choose corresponding version jar according to the version of sonnarqube.</p>
+<p>Move this jar to t/extensions/plugins. Then restart sonarqube.</p>
+<p>5.Sonar-Scanner</p>
+<p>5.1 Run this script:</p>
+<pre><code>wget https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-2.7.zip
+</code></pre><p>5.2 Edit sonar-scanner-2.7/conf/sonar-scanner.properties:</p>
+<pre><code>sonar.jdbc.url=jdbc:mysql://server-ip:3306/sonar?useUnicode=true&amp;amp;characterEncoding=utf8
+sonar.jdbc.username=sonar   
+sonar.jdbc.password=sonar   
+sonar.host.url=http://ip
+sonar.login=admin   
+sonar.password=admin
+</code></pre><p>5.3 Check if running normally or not:</p>
+<pre><code>sonar-scanner-2.7/bin/sonar-scanner –h
+</code></pre><p>If display the following info:</p>
+<pre><code>INFO: 
+INFO: usage: sonar-scanner [options] 
+INFO: 
+INFO: Options: 
+INFO:  -D,--define &lt;arg&gt;     Define property 
+INFO:  -h,--help             Display help information 
+INFO:  -v,--version          Display version information 
+INFO:  -X,--debug            Produce execution debug output 
+INFO:  -i,--interactive      Run interactively
+</code></pre><p>it turns out to be successful!</p>
+<p>6.Run offical test examples</p>
+<p>Visit <a href="https://github.com/SonarSource/sonar-scanning-examples" target="_blank" rel="noopener">sonar-scanning-examples</a>, download and unzip. Then move this folder to ./ sonarqube-scanner，run </p>
+<pre><code>sonar-scanner/bin/sonar-scanner
+</code></pre><p><img src="/sonarqube/sonar-scanner-test.png" alt=""></p>
+<p>More details, please visit: <a href="http://blog.csdn.net/jamenew/article/details/54864480" target="_blank" rel="noopener">how to check your code using sonar</a></p>
+<h2 id="Depoly-1"><a href="#Depoly-1" class="headerlink" title="Depoly"></a>Depoly</h2><p>1.Maven settings</p>
+<p>Add the following code in lcoal maven settings.</p>
+<pre><code>&lt;profile&gt;
+  &lt;id&gt;sonar&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    &lt;sonar.host.url&gt;server-ip:9000/sonar&lt;/sonar.host.url&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+</code></pre><p>2.Project setting</p>
+<p>Add the following code in pom.xml of checked project.</p>
+<pre><code>&lt;build&gt;
+   &lt;plugins&gt;
+        ....
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.sonarsource.scanner.maven&lt;/groupId&gt;
+             &lt;artifactId&gt;sonar-maven-plugin&lt;/artifactId&gt;
+             &lt;version&gt;3.3.0.603&lt;/version&gt;
+         &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre><p>3.If you have done above two steps, run </p>
+<pre><code>mvn sonar:sonar
+</code></pre><p>and you can get code check report. Login server-ip:9000/sonar, visit the related results.<br><img src="/sonarqube/running.png" alt=""></p>
+<p>4.Integrated with Jenkins</p>
+<p>4.1 Edit ./apache-maven-3.5.0/conf in your Jenkins server, add the following:</p>
+<pre><code>&lt;profile&gt;
+  &lt;id&gt;sonar&lt;/id&gt;
+  &lt;activation&gt;
+    &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+  &lt;/activation&gt;
+  &lt;properties&gt;
+    &lt;sonar.host.url&gt;server-ip:9000/sonar&lt;/sonar.host.url&gt;
+  &lt;/properties&gt;
+&lt;/profile&gt;
+</code></pre><p>4.2 In project build phase, add mvn sonar:sonar. It will be ok. </p>
+<p>The build script:</p>
+<pre><code>mvn sonar:sonar clean deploy -s mvn_setting.xml -Dmaven.test.skip=true
+</code></pre><p>4.3 Other</p>
+<p>There is another method to integrate with Jenkins. In Jeckins server, install sonar-scanner and add sonarqube server properties. This is the same as <font color="blue">5.Sonar-Scanner</font>.</p>
+<p>More details, please visit the following webs:</p>
+<p><a href="https://www.jianshu.com/p/421e05fe2cce" target="_blank" rel="noopener">https://www.jianshu.com/p/421e05fe2cce</a></p>
+<p><a href="https://www.ibm.com/developerworks/cn/devops/1612_qusm_jenkins/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/devops/1612_qusm_jenkins/index.html</a></p>
+<p><a href="http://blog.51cto.com/536410/2052399" target="_blank" rel="noopener">http://blog.51cto.com/536410/2052399</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/01/29/sonarqube/" data-id="cjd06pks50004ycu7w6sskx7w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sonarqube/">sonarqube</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-return" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -129,7 +273,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/28/return/" data-id="cjaj1yykr000014u7qui6sly4" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/28/return/" data-id="cjd06pkrw0002ycu7wpbwei3u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li></ul>
@@ -170,7 +314,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/xiaohou/" data-id="cjaj1whie00043ku7is0m15nh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/xiaohou/" data-id="cjd06pks70005ycu7j67cn6n5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
@@ -226,7 +370,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/jei-introduction/" data-id="cjaj1whhf00013ku7eb3qqjkd" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/jei-introduction/" data-id="cjd06pkro0001ycu7qw1mr2wr" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hibernate/">hibernate</a></li></ul>
@@ -273,7 +417,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/11/27/hello-world/" data-id="cjaj1whh500003ku7znoae4nu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/11/27/hello-world/" data-id="cjd06pkrd0000ycu7j0kpq6qt" class="article-share-link">Share</a>
       
       
     </footer>
@@ -295,7 +439,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hibernate/">hibernate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sonarqube/">sonarqube</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/try-catch-finally/">try-catch-finally</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xiaohou/">xiaohou</a></li></ul>
     </div>
   </div>
 
@@ -305,16 +449,16 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/try-catch-finally/" style="font-size: 10px;">try-catch-finally</a> <a href="/tags/xiaohou/" style="font-size: 10px;">xiaohou</a>
+      <a href="/tags/hibernate/" style="font-size: 10px;">hibernate</a> <a href="/tags/sonarqube/" style="font-size: 10px;">sonarqube</a> <a href="/tags/try-catch-finally/" style="font-size: 10px;">try-catch-finally</a> <a href="/tags/xiaohou/" style="font-size: 10px;">xiaohou</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Arkiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li></ul>
     </div>
   </div>
 
@@ -322,9 +466,13 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Siste innlegg</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2018/01/29/sonarqube/">sonarqube deploy &amp; use</a>
+          </li>
         
           <li>
             <a href="/2017/11/28/return/">return of TCF</a>
@@ -354,7 +502,7 @@ finally块之后的语句return，因为程序在try中已经return所以不再�
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2017 leewake<br>
+      &copy; 2018 leewake<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
